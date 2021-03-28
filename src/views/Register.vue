@@ -2,7 +2,7 @@
   <div class="auth-page">
     <div class="container-page">
       <div class="row">
-        <div class="col-md-6 offset-md-3 col-xs-12">
+        <div class="col-md-4 offset-md-4 col-xs-12">
           <h1 class="text-xs-center">Sign Up</h1>
           <p class="text-xs-center">
             <router-link :to="{ name: 'login' }">Have an account?</router-link>
@@ -29,7 +29,11 @@
                 placeholder="Password"
               />
             </fieldset>
-            <button type="submit" class="btn btn-lg btn-primary pull-xs-right">
+            <button
+              type="submit"
+              class="btn btn-lg btn-primary pull-xs-right"
+              :disabled="isSubmitting"
+            >
               Sign up
             </button>
           </form>
@@ -42,9 +46,16 @@
 <script>
 export default {
   name: 'AppRegister',
+  computed: {
+    isSubmitting() {
+      return this.$store.state.auth.isSubmitting;
+    }
+  },
   methods: {
     onSubmit() {
-      console.log('submitted form');
+      this.$store.dispatch('register', {}).then(user => {
+        console.log('successfully register user', user);
+      });
     }
   }
 };
