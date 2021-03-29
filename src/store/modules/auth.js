@@ -2,17 +2,25 @@ import authAPI from '@/api/auth';
 
 export default {
   state: {
-    isSubmitting: false
+    isSubmitting: false,
+    userData: null,
+    isLoggedIn: null,
+    validationErrors: null
   },
   mutations: {
     registerStart(state) {
       state.isSubmitting = true;
+      state.isLoggedIn = false;
     },
-    registerSuccess(state) {
+    registerSuccess(state, payload) {
       state.isSubmitting = false;
+      state.userData = payload;
+      state.isLoggedIn = true;
     },
-    registerFailure(state) {
+    registerFailure(state, payload) {
       state.isSubmitting = false;
+      state.validationErrors = payload;
+      state.isLoggedIn = null;
     }
   },
   actions: {
@@ -22,13 +30,11 @@ export default {
         authAPI
           .register(payload)
           .then(response => {
-            console.log(response);
             context.commit('registerSuccess', response.data.user);
             resolve(response.data.user);
           })
-          .catch(e => {
-            console.log(e);
-            context('registerFailure', e.response.data.errors);
+          .catch(result => {
+            context.commit('registerFailure', result.response.data.errors);
           });
       });
     }

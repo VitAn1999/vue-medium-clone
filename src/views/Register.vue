@@ -13,6 +13,7 @@
                 type="text"
                 class="form-control form-control-lg"
                 placeholder="Username"
+                v-model="username"
               />
             </fieldset>
             <fieldset class="form-group">
@@ -20,6 +21,7 @@
                 type="email"
                 class="form-control form-control-lg"
                 placeholder="Email"
+                v-model="email"
               />
             </fieldset>
             <fieldset class="form-group">
@@ -27,6 +29,7 @@
                 type="password"
                 class="form-control form-control-lg"
                 placeholder="Password"
+                v-model="password"
               />
             </fieldset>
             <button
@@ -46,6 +49,13 @@
 <script>
 export default {
   name: 'AppRegister',
+  data() {
+    return {
+      username: this.username,
+      email: this.email,
+      password: this.password
+    };
+  },
   computed: {
     isSubmitting() {
       return this.$store.state.auth.isSubmitting;
@@ -53,9 +63,16 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.$store.dispatch('register', {}).then(user => {
-        console.log('successfully register user', user);
-      });
+      this.$store
+        .dispatch('register', {
+          username: this.username,
+          email: this.email,
+          password: this.password
+        })
+        .then(user => {
+          console.log('successfully register user: ', user);
+          this.$router.push({ name: 'home' });
+        });
     }
   }
 };
