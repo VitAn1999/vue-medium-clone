@@ -7,6 +7,10 @@
           <p class="text-xs-center">
             <router-link :to="{ name: 'login' }">Have an account?</router-link>
           </p>
+          <app-validation-errors
+            v-if="validationErrors"
+            :validation-errors="validationErrors"
+          />
           <form @submit.prevent="onSubmit">
             <fieldset class="form-group">
               <input
@@ -47,8 +51,10 @@
 </template>
 
 <script>
+import AppValidationErrors from '@/components/ValidationErrors';
 export default {
   name: 'AppRegister',
+  components: { AppValidationErrors },
   data() {
     return {
       username: this.username,
@@ -59,6 +65,9 @@ export default {
   computed: {
     isSubmitting() {
       return this.$store.state.auth.isSubmitting;
+    },
+    validationErrors() {
+      return this.$store.state.auth.validationErrors;
     }
   },
   methods: {

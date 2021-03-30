@@ -1,4 +1,5 @@
 import authAPI from '@/api/auth';
+import { setItem } from '@/helpers/localStorage';
 
 export default {
   state: {
@@ -31,6 +32,7 @@ export default {
           .register(payload)
           .then(response => {
             context.commit('registerSuccess', response.data.user);
+            setItem('accessToken', response.data.user.token);
             resolve(response.data.user);
           })
           .catch(result => {
