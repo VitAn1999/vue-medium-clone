@@ -1,6 +1,20 @@
 import authAPI from '@/api/auth';
 import { setItem } from '@/helpers/localStorage';
 
+export const mutationType = {
+  registerStart: '[auth] registerStart',
+  registerSuccess: '[auth] registerSuccess',
+  registerFailure: '[auth] registerFailure',
+  loginStart: '[auth] loginStart',
+  loginSuccess: '[auth] loginSuccess',
+  loginFailure: '[auth] loginFailure'
+};
+
+export const actionType = {
+  register: '[auth] register',
+  login: '[auth] login'
+};
+
 export default {
   state: {
     isSubmitting: false,
@@ -9,34 +23,69 @@ export default {
     validationErrors: null
   },
   mutations: {
-    registerStart(state) {
+    [mutationType.registerStart](state) {
       state.isSubmitting = true;
       state.isLoggedIn = false;
     },
-    registerSuccess(state, payload) {
+    [mutationType.registerSuccess](state, payload) {
       state.isSubmitting = false;
       state.userData = payload;
       state.isLoggedIn = true;
     },
-    registerFailure(state, payload) {
+    [mutationType.registerFailure](state, payload) {
+      state.isSubmitting = false;
+      state.validationErrors = payload;
+      state.isLoggedIn = null;
+    },
+    [mutationType.loginStart](state) {
+      state.isSubmitting = true;
+      state.isLoggedIn = false;
+    },
+    [mutationType.loginSuccess](state, payload) {
+      state.isSubmitting = false;
+      state.userData = payload;
+      state.isLoggedIn = true;
+    },
+    [mutationType.loginFailure](state, payload) {
       state.isSubmitting = false;
       state.validationErrors = payload;
       state.isLoggedIn = null;
     }
   },
   actions: {
-    register(context, payload) {
+    [actionType.register](context, payload) {
       return new Promise(resolve => {
-        context.commit('registerStart');
+        context.commit(mutationType.registerStart);
         authAPI
           .register(payload)
           .then(response => {
-            context.commit('registerSuccess', response.data.user);
+            context.commit(mutationType.registerSuccess, response.data.user);
             setItem('accessToken', response.data.user.token);
             resolve(response.data.user);
           })
           .catch(result => {
-            context.commit('registerFailure', result.response.data.errors);
+            context.commit(
+              mutationType.registerFailure,
+              result.response.data.errors
+            );
+          });
+      });
+    },
+    [actionType.login](context, payload) {
+      return new Promise(resolve => {
+        context.commit(mutationType.loginStart);
+        authAPI
+          .login(payload)
+          .then(response => {
+            context.commit(mutationType.loginSuccess, response.data.user);
+            setItem('accessToken', response.data.user.token);
+            resolve(response.data.user);
+          })
+          .catch(result => {
+            context.commit(
+              mutationType.loginFailure,
+              result.response.data.errors
+            );
           });
       });
     }
