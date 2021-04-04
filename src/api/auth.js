@@ -8,7 +8,12 @@ const login = payload => {
   return axios.post('/users/login', { user: payload });
 };
 
+const getCurrentUser = () => {
+  return axios.get('/user');
+};
+
 export default {
   register,
-  login
+  login,
+  getCurrentUser
 };
