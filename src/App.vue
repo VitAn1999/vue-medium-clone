@@ -1,6 +1,15 @@
 <template>
   <div id="app">
-    <h2>Medium Clone!</h2>
+    <app-topbar></app-topbar>
     <router-view></router-view>
   </div>
 </template>
+
+<script>
+import AppTopbar from '@/components/Topbar';
+export default {
+  components: {
+    AppTopbar
+  }
+};
+</script>

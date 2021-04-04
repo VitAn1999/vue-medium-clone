@@ -15,12 +15,29 @@ export const actionType = {
   login: '[auth] login'
 };
 
+export const getterType = {
+  userData: '[auth] userData',
+  isLoggedIn: '[auth] isLoggedIn',
+  isAnonimus: '[auth] isAnonimus'
+};
+
 export default {
   state: {
     isSubmitting: false,
     userData: null,
     isLoggedIn: null,
     validationErrors: null
+  },
+  getters: {
+    [getterType.userData](state) {
+      return state.userData;
+    },
+    [getterType.isLoggedIn](state) {
+      return !!state.isLoggedIn;
+    },
+    [getterType.isAnonimus](state) {
+      return state.isLoggedIn === false;
+    }
   },
   mutations: {
     [mutationType.registerStart](state) {
