@@ -28,11 +28,11 @@
           <li class="nav-item">
             <router-link
               class="nav-link"
-              :to="{ name: 'setting' }"
+              :to="{ name: 'settings' }"
               active-class="active"
             >
               <i class="ion-gear-a"></i>
-              &nbsp; Setting</router-link
+              &nbsp; Settings</router-link
             >
           </li>
           <li class="nav-item">
