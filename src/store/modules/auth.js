@@ -79,6 +79,7 @@ export default {
 
     [mutationType.getCurrentUserStart](state) {
       state.isLoading = true;
+      state.userData = null;
     },
     [mutationType.getCurrentUserSuccess](state, payload) {
       state.isLoading = false;
