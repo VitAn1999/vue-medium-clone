@@ -21,11 +21,11 @@ import AppTags from '@/components/Tags';
 import AppBanner from '@/components/Banner';
 import AppFeedToggler from '@/components/FeedToggler';
 export default {
-  name: 'AppGlobalFeed',
+  name: 'AppYourFeed',
   components: { AppFeed, AppTags, AppBanner, AppFeedToggler },
   data() {
     return {
-      apiUrl: '/articles',
+      apiUrl: '/articles/feed',
       tagsUrl: '/tags'
     };
   }

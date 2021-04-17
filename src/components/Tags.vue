@@ -5,7 +5,7 @@
     <app-error-message v-if="error" />
     <div v-if="data" class="tag-list">
       <router-link
-        :to="{ name: 'tags', params: { slug: tag } }"
+        :to="{ name: 'tag', params: { slug: tag } }"
         v-for="(tag, index) in data.tags"
         :key="index"
         class="tag-default tag-pill"
@@ -38,7 +38,6 @@ export default {
       error: state => state.tags.error
     })
   },
-
   mounted() {
     this.$store.dispatch(actionType.getTags, { tagsUrl: this.tagsUrl });
   }

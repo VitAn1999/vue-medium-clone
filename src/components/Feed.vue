@@ -2,7 +2,6 @@
   <div>
     <app-loader v-if="isLoading" />
     <app-error-message v-if="error" />
-    FEED TOGGLE
     <div v-if="feed">
       <div
         class="article-preview"
@@ -85,6 +84,9 @@ export default {
     currentPage() {
       return Number(this.$route.query.page || '1');
     },
+    currentFullUrl() {
+      return this.$route.fullPath;
+    },
     baseUrl() {
       return this.$route.path;
     },
@@ -93,7 +95,7 @@ export default {
     }
   },
   watch: {
-    currentPage() {
+    currentFullUrl() {
       this.fetchFeed();
     }
   },

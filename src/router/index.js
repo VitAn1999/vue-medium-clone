@@ -23,12 +23,12 @@ const routes = [
   {
     path: '/feed',
     name: 'yourFeed',
-    component: GlobalFeed
+    component: () => import('@/views/YourFeed.vue')
   },
   {
     path: '/tags/:slug',
     name: 'tag',
-    component: GlobalFeed
+    component: () => import('@/views/TagFeed.vue')
   },
   {
     path: '/settings',
