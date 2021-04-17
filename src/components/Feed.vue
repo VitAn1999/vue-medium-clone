@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div v-if="isLoading" class="text-center">Loading...</div>
-    <div v-if="error" class="text-center">Something went wrong...</div>
+    <app-loader v-if="isLoading" />
+    <app-error-message v-if="error" />
     FEED TOGGLE
     <div v-if="feed">
       <div
@@ -43,19 +43,25 @@
         </router-link>
       </div>
       <app-pagination
-        :total="total"
+        :total="feed.articlesCount"
         :limit="limit"
         :current-page="currentPage"
-        :url="url"
+        :url="baseUrl"
       />
     </div>
   </div>
 </template>
 
 <script>
+import AppPagination from '@/components/Pagination';
+import AppLoader from '@/components/Loader';
+import AppErrorMessage from '@/components/ErrorMessage';
+
 import { actionType } from '@/store/modules/feed';
 import { mapState } from 'vuex';
-import AppPagination from '@/components/Pagination';
+import { LIMIT } from '@/helpers/constants';
+import { parseUrl, stringify } from 'query-string';
+
 export default {
   name: 'AppFeed',
   props: {
@@ -66,22 +72,45 @@ export default {
   },
   data() {
     return {
-      total: 500,
-      limit: 10,
-      currentPage: 5,
-      url: '/'
+      limit: LIMIT
     };
   },
-  components: { AppPagination },
+  components: { AppPagination, AppLoader, AppErrorMessage },
   computed: {
     ...mapState({
       isLoading: state => state.feed.isLoading,
       feed: state => state.feed.data,
       error: state => state.feed.error
-    })
+    }),
+    currentPage() {
+      return Number(this.$route.query.page || '1');
+    },
+    baseUrl() {
+      return this.$route.path;
+    },
+    offset() {
+      return this.currentPage * this.limit - this.limit;
+    }
+  },
+  watch: {
+    currentPage() {
+      this.fetchFeed();
+    }
+  },
+  methods: {
+    fetchFeed() {
+      const parseApiUrl = parseUrl(this.apiUrl);
+      const stringifiedQuery = stringify({
+        ...parseApiUrl.query,
+        limit: this.limit,
+        offset: this.offset
+      });
+      const fullApiUrl = `${parseApiUrl.url}?${stringifiedQuery}`;
+      this.$store.dispatch(actionType.getFeed, { apiUrl: fullApiUrl });
+    }
   },
   mounted() {
-    this.$store.dispatch(actionType.getFeed, { apiUrl: this.apiUrl });
+    this.fetchFeed();
   }
 };
 </script>
