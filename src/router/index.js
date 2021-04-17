@@ -43,7 +43,7 @@ const routes = [
   {
     path: '/articles/:slug',
     name: 'article',
-    component: () => import('@/views/Settings.vue')
+    component: () => import('@/views/Article.vue')
   },
   {
     path: '/articles/:slug/edit',
