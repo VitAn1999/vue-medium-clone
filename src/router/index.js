@@ -38,7 +38,7 @@ const routes = [
   {
     path: '/articles/new',
     name: 'createArticle',
-    component: () => import('@/views/Settings.vue')
+    component: () => import('@/views/CreateArticle.vue')
   },
   {
     path: '/articles/:slug',
@@ -48,7 +48,7 @@ const routes = [
   {
     path: '/articles/:slug/edit',
     name: 'editArticle',
-    component: () => import('@/views/Settings.vue')
+    component: () => import('@/views/EditArticle.vue')
   },
   {
     path: '/articles/:slug/favorite',
