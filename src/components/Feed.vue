@@ -38,7 +38,7 @@
           <h1>{{ article.title }}</h1>
           <p>{{ article.description }}</p>
           <span>Read more...</span>
-          TAG LIST
+          <app-tag-list :tagList="article.tagList" />
         </router-link>
       </div>
       <app-pagination
@@ -55,6 +55,7 @@
 import AppPagination from '@/components/Pagination';
 import AppLoader from '@/components/Loader';
 import AppErrorMessage from '@/components/ErrorMessage';
+import AppTagList from '@/components/TagList';
 
 import { actionType } from '@/store/modules/feed';
 import { mapState } from 'vuex';
@@ -74,7 +75,7 @@ export default {
       limit: LIMIT
     };
   },
-  components: { AppPagination, AppLoader, AppErrorMessage },
+  components: { AppPagination, AppLoader, AppErrorMessage, AppTagList },
   computed: {
     ...mapState({
       isLoading: state => state.feed.isLoading,

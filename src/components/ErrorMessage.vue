@@ -1,5 +1,7 @@
 <template>
-  <div class="text-center">{{ message }}</div>
+  <div class="container">
+    <h2>{{ message }}</h2>
+  </div>
 </template>
 
 <script>
