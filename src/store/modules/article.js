@@ -51,8 +51,11 @@ export default {
             context.commit(mutationType.getArticleSuccess, article);
             resolve(article);
           })
-          .catch(e => {
-            context.commit(mutationType.getArticleFailure, e);
+          .catch(result => {
+            context.commit(
+              mutationType.getArticleFailure,
+              result.response.data.errors
+            );
           });
       });
     },

@@ -3,7 +3,10 @@
     <div class="container page">
       <div class="row">
         <div class="col-md-10 offset-md-1 col-xs-12">
-          <app-validation-errors v-if="errors"></app-validation-errors>
+          <app-validation-errors
+            v-if="errors"
+            :validation-errors="errors"
+          ></app-validation-errors>
           <form @submit.prevent="onSubmit">
             <fieldset>
               <fieldset class="form-group">
@@ -93,8 +96,9 @@ export default {
         title: this.title,
         description: this.description,
         body: this.body,
-        tagList: this.tagList
+        tagList: this.tagList.split(' ')
       };
+      console.log(form);
       this.$emit('articleSubmit', form);
     }
   }

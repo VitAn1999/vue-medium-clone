@@ -1,6 +1,5 @@
 <template>
   <div>
-    <div>Create Article</div>
     <app-article-form
       :initial-data="initialData"
       :errors="validationErrors"
@@ -12,6 +11,8 @@
 
 <script>
 import AppArticleForm from '@/components/ArticleForm';
+import { mapState } from 'vuex';
+import { actionType } from '@/store/modules/createArticle';
 export default {
   name: 'AppCreateArticle',
   components: { AppArticleForm },
@@ -22,14 +23,25 @@ export default {
         description: '',
         body: '',
         tagList: []
-      },
-      validationErrors: null,
-      isSubmiting: false
+      }
     };
   },
+  computed: {
+    ...mapState({
+      validationErrors: state => state.createArticle.validationErrors,
+      isSubmiting: state => state.createArticle.isSubmiting
+    })
+  },
   methods: {
-    onSubmit(data) {
-      console.log(data);
+    onSubmit(articleInput) {
+      this.$store
+        .dispatch(actionType.createArticle, { articleInput })
+        .then(article => {
+          this.$router.push({
+            name: 'article',
+            params: { slug: article.slug }
+          });
+        });
     }
   }
 };
