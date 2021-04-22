@@ -84,21 +84,21 @@ export default {
   },
   data() {
     return {
-      title: '',
-      description: '',
-      body: '',
-      tagList: ''
+      title: this.initialData.title,
+      description: this.initialData.description,
+      body: this.initialData.body,
+      tagList: this.initialData.tagList.join(' ')
     };
   },
   methods: {
     onSubmit() {
+      console.log(this.tagList);
       const form = {
         title: this.title,
         description: this.description,
         body: this.body,
         tagList: this.tagList.split(' ')
       };
-      console.log(form);
       this.$emit('articleSubmit', form);
     }
   }
