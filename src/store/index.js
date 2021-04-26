@@ -8,6 +8,7 @@ import article from '@/store/modules/article';
 import createArticle from '@/store/modules/createArticle';
 import editArticle from '@/store/modules/editArticle';
 import setting from '@/store/modules/setting';
+import favoriteArticle from '@/store/modules/favoriteArticle';
 
 Vue.use(Vuex);
 
@@ -15,5 +16,14 @@ export default new Vuex.Store({
   state: {},
   mutations: {},
   actions: {},
-  modules: { auth, feed, tags, article, createArticle, editArticle, setting }
+  modules: {
+    auth,
+    feed,
+    tags,
+    article,
+    createArticle,
+    editArticle,
+    setting,
+    favoriteArticle
+  }
 });

@@ -29,7 +29,13 @@
             </router-link>
             <span class="date">{{ article.createdAt }}</span>
           </div>
-          <div class="pull-xs-right">ADD FAVORITE ARTICLE</div>
+          <div class="pull-xs-right">
+            <app-add-favorite-article
+              :isFavorited="article.favorited"
+              :slugArticle="article.slug"
+              :favoritesCount="article.favoritesCount"
+            ></app-add-favorite-article>
+          </div>
         </div>
         <router-link
           :to="{ name: 'article', params: { slug: article.slug } }"
@@ -56,6 +62,7 @@ import AppPagination from '@/components/Pagination';
 import AppLoader from '@/components/Loader';
 import AppErrorMessage from '@/components/ErrorMessage';
 import AppTagList from '@/components/TagList';
+import AppAddFavoriteArticle from '@/components/AddFavoriteArticle';
 
 import { actionType } from '@/store/modules/feed';
 import { mapState } from 'vuex';
@@ -75,7 +82,13 @@ export default {
       limit: LIMIT
     };
   },
-  components: { AppPagination, AppLoader, AppErrorMessage, AppTagList },
+  components: {
+    AppPagination,
+    AppLoader,
+    AppErrorMessage,
+    AppTagList,
+    AppAddFavoriteArticle
+  },
   computed: {
     ...mapState({
       isLoading: state => state.feed.isLoading,
