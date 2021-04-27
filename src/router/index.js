@@ -58,12 +58,12 @@ const routes = [
   {
     path: '/profile/:slug',
     name: 'userProfile',
-    component: () => import('@/views/Settings.vue')
+    component: () => import('@/views/UserProfile.vue')
   },
   {
     path: '/profile/:slug/favorites',
     name: 'userProfileFavorites',
-    component: () => import('@/views/Settings.vue')
+    component: () => import('@/views/UserProfile.vue')
   }
 ];
 
