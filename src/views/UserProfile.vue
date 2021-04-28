@@ -15,6 +15,12 @@
               <i class="ion-gear-a"></i>
               Edit Profile Setting
             </router-link>
+            <app-following-profile
+              v-else
+              :isAnonimus="isAnonimus"
+              :isFollowing="userProfile.following"
+              :username="userProfile.username"
+            ></app-following-profile>
           </div>
         </div>
       </div>
@@ -56,10 +62,12 @@ import { actionType as userProfileActionType } from '@/store/modules/userProfile
 import { getterType as authGetterType } from '@/store/modules/auth';
 import { mapState, mapGetters } from 'vuex';
 import AppFeed from '@/components/Feed';
+import AppFollowingProfile from '@/components/FollowingProfile';
 export default {
   name: 'AppUserProfile',
   components: {
-    AppFeed
+    AppFeed,
+    AppFollowingProfile
   },
   computed: {
     ...mapState({
@@ -68,7 +76,8 @@ export default {
       userProfile: state => state.userProfile.data
     }),
     ...mapGetters({
-      currentUser: authGetterType.userData
+      currentUser: authGetterType.userData,
+      isAnonimus: authGetterType.isAnonimus
     }),
     isCurrentUser() {
       if (!this.currentUser || !this.userProfile) {

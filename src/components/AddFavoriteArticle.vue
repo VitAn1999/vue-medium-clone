@@ -1,16 +1,37 @@
 <template>
-  <button
-    @click="addFavorite"
-    :class="{
-      btn: true,
-      'btn-sm': true,
-      'btn-primary': isFavoritedOptimistic,
-      'btn-outline-primary': !isFavoritedOptimistic
-    }"
-  >
-    <i class="ion-heart"></i>
-    &nbsp; <span>{{ favoritesCountOptimistic }}</span>
-  </button>
+  <span>
+    <button
+      v-if="!description"
+      @click="addFavorite"
+      :class="{
+        btn: true,
+        'btn-sm': true,
+        'btn-primary': isFavoritedOptimistic,
+        'btn-outline-primary': !isFavoritedOptimistic
+      }"
+    >
+      <i class="ion-heart"></i>
+      &nbsp; <span>{{ favoritesCountOptimistic }}</span>
+    </button>
+
+    <button
+      v-if="description"
+      @click="addFavorite"
+      :class="{
+        btn: true,
+        'btn-sm': true,
+        'btn-primary': isFavoritedOptimistic,
+        'btn-outline-primary': !isFavoritedOptimistic
+      }"
+    >
+      <i class="ion-heart"></i>
+      &nbsp;
+      <span v-if="!isFavoritedOptimistic">Favorite</span>
+      <span v-if="isFavoritedOptimistic">Unfavorite</span>
+      Article
+      <span>({{ favoritesCountOptimistic }})</span>
+    </button>
+  </span>
 </template>
 
 <script>
@@ -29,6 +50,10 @@ export default {
     slugArticle: {
       type: String,
       require: true
+    },
+    description: {
+      type: Boolean,
+      require: false
     }
   },
   data() {

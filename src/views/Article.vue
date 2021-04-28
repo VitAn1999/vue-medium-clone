@@ -44,6 +44,20 @@
                 Delete Article
               </button>
             </span>
+            <span v-else>
+              <app-following-profile
+                :isAnonimus="isAnonimus"
+                :isFollowing="article.author.following"
+                :username="article.author.username"
+              ></app-following-profile>
+              &nbsp;
+              <app-add-favorite-article
+                :isFavorited="article.favorited"
+                :slugArticle="article.slug"
+                :favoritesCount="article.favoritesCount"
+                :description="descriptionForFavoriteArticle"
+              ></app-add-favorite-article>
+            </span>
           </div>
         </div>
       </div>
@@ -65,6 +79,8 @@
 import AppLoader from '@/components/Loader';
 import AppErrorMessage from '@/components/ErrorMessage';
 import AppTagList from '@/components/TagList';
+import AppFollowingProfile from '@/components/FollowingProfile';
+import AppAddFavoriteArticle from '@/components/AddFavoriteArticle';
 
 import { mapState, mapGetters } from 'vuex';
 import { actionType as articleActionType } from '@/store/modules/article';
@@ -72,7 +88,18 @@ import { getterType as authGetterType } from '@/store/modules/auth';
 
 export default {
   name: 'AppArticle',
-  components: { AppLoader, AppErrorMessage, AppTagList },
+  components: {
+    AppLoader,
+    AppErrorMessage,
+    AppTagList,
+    AppFollowingProfile,
+    AppAddFavoriteArticle
+  },
+  data() {
+    return {
+      descriptionForFavoriteArticle: true
+    };
+  },
   computed: {
     ...mapState({
       isLoading: state => state.article.isLoading,
@@ -80,7 +107,8 @@ export default {
       article: state => state.article.data
     }),
     ...mapGetters({
-      userData: authGetterType.userData
+      userData: authGetterType.userData,
+      isAnonimus: authGetterType.isAnonimus
     }),
     isAuthor() {
       if (!this.userData.username || !this.article.author.username) {
