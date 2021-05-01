@@ -70,6 +70,63 @@
             <app-tag-list :tagList="article.tagList" />
           </div>
         </div>
+        <hr />
+        <div class="article-actions">
+          <div class="article-meta">
+            <router-link
+              :to="{
+                name: 'userProfile',
+                params: { slug: article.author.username }
+              }"
+            >
+              <img :src="article.author.image" />
+            </router-link>
+            <div class="info">
+              <router-link
+                class="author"
+                :to="{
+                  name: 'userProfile',
+                  params: { slug: article.author.username }
+                }"
+              >
+                {{ article.author.username }}
+              </router-link>
+              <span class="date">{{ article.createdAt }}</span>
+            </div>
+            <span v-if="isAuthor">
+              <router-link
+                class="btn btn-outline-secondary btn-sm"
+                style="margin-right:5px"
+                :to="{ name: 'editArticle', params: { slug: article.slug } }"
+              >
+                <i class="ion-edit"></i>
+                Edit Article
+              </router-link>
+              <button
+                class="btn btn-outline-danger btn-sm"
+                @click="deleteArticle"
+              >
+                <i class="ion-trash-a"></i>
+                Delete Article
+              </button>
+            </span>
+            <span v-else>
+              <app-following-profile
+                :isAnonimus="isAnonimus"
+                :isFollowing="article.author.following"
+                :username="article.author.username"
+              ></app-following-profile>
+              &nbsp;
+              <app-add-favorite-article
+                :isFavorited="article.favorited"
+                :slugArticle="article.slug"
+                :favoritesCount="article.favoritesCount"
+                :description="descriptionForFavoriteArticle"
+              ></app-add-favorite-article>
+            </span>
+          </div>
+          <app-comments-form :current-user="userData"></app-comments-form>
+        </div>
       </div>
     </div>
   </div>
@@ -81,6 +138,7 @@ import AppErrorMessage from '@/components/ErrorMessage';
 import AppTagList from '@/components/TagList';
 import AppFollowingProfile from '@/components/FollowingProfile';
 import AppAddFavoriteArticle from '@/components/AddFavoriteArticle';
+import AppCommentsForm from '@/components/CommentsForm';
 
 import { mapState, mapGetters } from 'vuex';
 import { actionType as articleActionType } from '@/store/modules/article';
@@ -93,7 +151,8 @@ export default {
     AppErrorMessage,
     AppTagList,
     AppFollowingProfile,
-    AppAddFavoriteArticle
+    AppAddFavoriteArticle,
+    AppCommentsForm
   },
   data() {
     return {
