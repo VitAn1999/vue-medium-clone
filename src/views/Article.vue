@@ -125,8 +125,8 @@
               ></app-add-favorite-article>
             </span>
           </div>
-          <app-comments-form :current-user="userData"></app-comments-form>
         </div>
+        <app-comments-form :current-user="userData"></app-comments-form>
       </div>
     </div>
   </div>

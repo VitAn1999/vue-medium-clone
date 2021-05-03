@@ -2,9 +2,10 @@
   <div class="row">
     <div class="col-xs-12 col-md-8 offset-md-2">
       <div>
-        <app-validation-erorrs
-          :validation-errors="validationErros"
-        ></app-validation-erorrs>
+        <app-error-message
+          v-if="errorMessages"
+          :message="errorMessages"
+        ></app-error-message>
         <form @submit.prevent="onSubmit" class="card comment-form">
           <div class="card-block">
             <textarea
@@ -26,19 +27,46 @@
           </div>
         </form>
       </div>
-      <div class="card">
-        <div class="card-block">
-          <p class="card-text"></p>
-        </div>
-        <div class="card-footer">
-          <router-link class="comment-author">
-            <img :src="image" class="comment-author-img" />
-          </router-link>
-          <router-link class="comment-author"> </router-link>
-          <span class="date-posted"></span>
-          <span class="mod-options">
-            <i class="ion-trash-a" @click="deleteComment"></i>
-          </span>
+      <app-loader v-if="isLoading"></app-loader>
+      <div v-if="articleComments">
+        <div
+          class="card"
+          v-for="(comment, index) in articleComments"
+          :key="index"
+        >
+          <div class="card-block">
+            <p class="card-text">{{ comment.body }}</p>
+          </div>
+          <div class="card-footer">
+            <router-link
+              class="comment-author"
+              :to="{
+                name: 'userProfile',
+                params: { slug: `${comment.author.username}` }
+              }"
+            >
+              <img :src="comment.author.image" class="comment-author-img" />
+            </router-link>
+            <router-link
+              class="comment-author"
+              :to="{
+                name: 'userProfile',
+                params: { slug: `${comment.author.username}` }
+              }"
+            >
+            </router-link>
+            <span class="date-posted">{{ comment.createdAt }}</span>
+            <span
+              class="mod-options"
+              v-if="currentUser.username === comment.author.username"
+            >
+              <i
+                class="ion-trash-a"
+                :id="comment.id"
+                @click="deleteComment"
+              ></i>
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -46,16 +74,59 @@
 </template>
 
 <script>
+import { actionType } from '@/store/modules/articleComments';
+import { mapState } from 'vuex';
+import AppErrorMessage from '@/components/ErrorMessage';
+import AppLoader from '@/components/Loader';
 export default {
   name: 'AppCommentsForm',
+  components: { AppErrorMessage, AppLoader },
   props: {
     currentUser: {
       type: Object,
       require: true
     }
   },
+  data() {
+    return {
+      commentBody: ''
+    };
+  },
+  computed: {
+    ...mapState({
+      articleComments: state => state.articleComments.comments,
+      errorMessages: state => state.articleComments.errors,
+      isLoading: state => state.articleComments.isLoading
+    }),
+    slug() {
+      return this.$route.params.slug;
+    }
+  },
+  methods: {
+    rerenderComponent() {
+      this.$store.dispatch(actionType.getArticleComments, {
+        slug: this.$route.params.slug
+      });
+    },
+    async onSubmit() {
+      await this.$store.dispatch(actionType.postArticleComment, {
+        slug: this.slug,
+        commentBody: this.commentBody
+      });
+      this.commentBody = '';
+      this.rerenderComponent();
+    },
+    async deleteComment(event) {
+      console.log('delete comment');
+      await this.$store.dispatch(actionType.deleteArticleComment, {
+        slug: this.slug,
+        id: event.target.id
+      });
+      this.rerenderComponent();
+    }
+  },
   mounted() {
-    console.log(this.currentUser);
+    this.rerenderComponent();
   }
 };
 </script>

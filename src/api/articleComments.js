@@ -6,16 +6,14 @@ const getArticleComments = slug => {
     .then(response => response.data.comments);
 };
 
-const postArticleComment = (slug, comment) => {
+const postArticleComment = (slug, commentBody) => {
   return axios
-    .post(`/articles/${slug}/comments`, { comment })
+    .post(`/articles/${slug}/comments`, { comment: { body: commentBody } })
     .then(response => response.data.comment);
 };
 
 const deleteArticleComment = (slug, id) => {
-  return axios
-    .delete(`/articles/${slug}/comments/${id}`)
-    .then(response => response.data.comments);
+  return axios.delete(`/articles/${slug}/comments/${id}`);
 };
 
 export default {
