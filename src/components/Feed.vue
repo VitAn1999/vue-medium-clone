@@ -27,7 +27,7 @@
             >
               {{ article.author.username }}
             </router-link>
-            <span class="date">{{ article.createdAt }}</span>
+            <span class="date">{{ article.createdAt | date('date') }}</span>
           </div>
           <div class="pull-xs-right">
             <app-add-favorite-article

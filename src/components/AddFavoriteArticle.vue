@@ -64,10 +64,15 @@ export default {
   },
   methods: {
     addFavorite() {
-      this.$store.dispatch(actionType.addFavoriteArticle, {
-        slug: this.slugArticle,
-        isFavorited: this.isFavoritedOptimistic
-      });
+      this.$store
+        .dispatch(actionType.addFavoriteArticle, {
+          slug: this.slugArticle,
+          isFavorited: this.isFavoritedOptimistic
+        })
+        .then(article => {
+          this.favoritesCountOptimistic = article.favoritesCount;
+          this.isFavoritedOptimistic = article.favorited;
+        });
       if (this.isFavoritedOptimistic) {
         this.favoritesCountOptimistic--;
       } else {

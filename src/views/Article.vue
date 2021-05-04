@@ -25,7 +25,7 @@
               >
                 {{ article.author.username }}
               </router-link>
-              <span class="date">{{ article.createdAt }}</span>
+              <span class="date">{{ article.createdAt | date('date') }}</span>
             </div>
             <span v-if="isAuthor">
               <router-link
@@ -91,7 +91,7 @@
               >
                 {{ article.author.username }}
               </router-link>
-              <span class="date">{{ article.createdAt }}</span>
+              <span class="date">{{ article.createdAt | date('date') }}</span>
             </div>
             <span v-if="isAuthor">
               <router-link

@@ -47,6 +47,7 @@
             >
               <img :src="comment.author.image" class="comment-author-img" />
             </router-link>
+            &nbsp;
             <router-link
               class="comment-author"
               :to="{
@@ -54,8 +55,11 @@
                 params: { slug: `${comment.author.username}` }
               }"
             >
+              {{ comment.author.username }}
             </router-link>
-            <span class="date-posted">{{ comment.createdAt }}</span>
+            <span class="date-posted">{{
+              comment.createdAt | date('date')
+            }}</span>
             <span
               class="mod-options"
               v-if="currentUser.username === comment.author.username"
