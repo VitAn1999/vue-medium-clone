@@ -11,7 +11,7 @@
     <button
       v-if="!isFollowingOptimistic"
       @click="follow"
-      class="btn btn-sm action-btn btn-outline-secondary"
+      class="btn btn-sm action-btn btn-secondary"
     >
       <i class="ion-plus-round"></i>
       &nbsp; Follow {{ username }}
@@ -19,7 +19,7 @@
     <button
       v-if="isFollowingOptimistic"
       @click="follow"
-      class="btn btn-sm action-btn btn-secondary"
+      class="btn btn-sm action-btn btn-outline-secondary"
     >
       <i class="ion-plus-round"></i>
       &nbsp; Unfollow {{ username }}
