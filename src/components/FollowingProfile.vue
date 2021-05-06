@@ -52,11 +52,15 @@ export default {
   },
   methods: {
     follow() {
-      this.$store.dispatch(actionType.followingProfile, {
-        username: this.username,
-        isFollowing: this.isFollowingOptimistic
-      });
-      this.isFollowingOptimistic = !this.isFollowingOptimistic;
+      this.$store
+        .dispatch(actionType.followingProfile, {
+          username: this.username,
+          isFollowing: this.isFollowingOptimistic
+        })
+        .then(profile => {
+          this.isFollowingOptimistic = profile.following;
+          this.$emit('profileUpdate', profile);
+        });
     }
   }
 };

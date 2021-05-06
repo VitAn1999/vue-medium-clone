@@ -72,13 +72,8 @@ export default {
         .then(article => {
           this.favoritesCountOptimistic = article.favoritesCount;
           this.isFavoritedOptimistic = article.favorited;
+          this.$emit('articleUpdate', article);
         });
-      if (this.isFavoritedOptimistic) {
-        this.favoritesCountOptimistic--;
-      } else {
-        this.favoritesCountOptimistic++;
-      }
-      this.isFavoritedOptimistic = !this.isFavoritedOptimistic;
     }
   }
 };

@@ -16,11 +16,19 @@ export const actionType = {
   deleteArticle: '[article] deleteArticle'
 };
 
+export const getterType = {
+  articleAuthor: '[article] articleAuthor'
+};
 export default {
   state: {
     isLoading: false,
     data: null,
     error: null
+  },
+  getters: {
+    [getterType.articleAuthor](state) {
+      return state.data.author;
+    }
   },
   mutations: {
     [mutationType.getArticleStart](state) {

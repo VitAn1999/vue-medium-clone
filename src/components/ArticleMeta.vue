@@ -3,20 +3,20 @@
     <router-link
       :to="{
         name: 'userProfile',
-        params: { slug: article.author.username }
+        params: { slug: profile.username }
       }"
     >
-      <img :src="article.author.image" />
+      <img :src="profile.image" />
     </router-link>
     <div class="info">
       <router-link
         class="author"
         :to="{
           name: 'userProfile',
-          params: { slug: article.author.username }
+          params: { slug: profile.username }
         }"
       >
-        {{ article.author.username }}
+        {{ profile.username }}
       </router-link>
       <span class="date">{{ article.createdAt | date('date') }}</span>
     </div>
@@ -37,8 +37,9 @@
     <span v-else>
       <app-following-profile
         :isAnonimus="isAnonimus"
-        :isFollowing="article.author.following"
-        :username="article.author.username"
+        :isFollowing="profile.following"
+        :username="profile.username"
+        @profileUpdate="profileUpdate"
       ></app-following-profile>
       &nbsp;
       <app-add-favorite-article
@@ -46,6 +47,7 @@
         :slugArticle="article.slug"
         :favoritesCount="article.favoritesCount"
         :description="descriptionForFavoriteArticle"
+        @articleUpdate="articleUpdate"
       ></app-add-favorite-article>
     </span>
   </div>
@@ -65,6 +67,10 @@ export default {
     article: {
       type: Object,
       require: true
+    },
+    profile: {
+      type: Object,
+      require: true
     }
   },
   components: {
@@ -82,10 +88,10 @@ export default {
       isAnonimus: authGetterType.isAnonimus
     }),
     isAuthor() {
-      if (!this.userData.username || !this.article.author.username) {
+      if (!this.userData.username || !this.profile.username) {
         return false;
       } else {
-        return this.userData.username === this.article.author.username;
+        return this.userData.username === this.profile.username;
       }
     }
   },
@@ -98,9 +104,15 @@ export default {
         .then(() => {
           this.$router.push({
             name: 'userProfile',
-            params: { slug: this.article.author.username }
+            params: { slug: this.profile.username }
           });
         });
+    },
+    articleUpdate(article) {
+      this.$emit('articleUpdate', article);
+    },
+    profileUpdate(profile) {
+      this.$emit('profileUpdate', profile);
     }
   }
 };
