@@ -22,7 +22,6 @@
               <p>{{ article.body }}</p>
             </div>
             <app-tag-list :tagList="article.tagList" />
-            <p>{{ article.favoritesCount }}</p>
           </div>
         </div>
         <hr />
@@ -50,7 +49,6 @@ import AppArticleMeta from '@/components/ArticleMeta';
 
 import { mapState, mapGetters } from 'vuex';
 import { actionType as articleActionType } from '@/store/modules/article';
-import { getterType as articleGetterType } from '@/store/modules/article';
 import { getterType as authGetterType } from '@/store/modules/auth';
 
 export default {
@@ -73,11 +71,11 @@ export default {
     ...mapState({
       isLoading: state => state.article.isLoading,
       error: state => state.article.error,
-      article: state => state.article.data
+      article: state => state.article.data,
+      profile: state => state.article.articleAuthor
     }),
     ...mapGetters({
-      userData: authGetterType.userData,
-      profile: articleGetterType.articleAuthor
+      userData: authGetterType.userData
     }),
     currentArticle() {
       if (this.updatedArticle) {
@@ -108,7 +106,6 @@ export default {
   },
   mounted() {
     this.rerenderPage();
-    console.log(this.article);
   },
   methods: {
     rerenderPage() {

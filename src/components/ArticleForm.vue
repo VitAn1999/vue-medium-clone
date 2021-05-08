@@ -92,13 +92,13 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log(this.tagList);
       const form = {
         title: this.title,
         description: this.description,
         body: this.body,
         tagList: this.tagList.split(' ')
       };
+      console.log(form.tagList);
       this.$emit('articleSubmit', form);
     }
   }

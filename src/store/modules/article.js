@@ -16,29 +16,24 @@ export const actionType = {
   deleteArticle: '[article] deleteArticle'
 };
 
-export const getterType = {
-  articleAuthor: '[article] articleAuthor'
-};
 export default {
   state: {
     isLoading: false,
     data: null,
-    error: null
-  },
-  getters: {
-    [getterType.articleAuthor](state) {
-      return state.data.author;
-    }
+    error: null,
+    articleAuthor: null
   },
   mutations: {
     [mutationType.getArticleStart](state) {
       state.isLoading = true;
       state.data = null;
+      state.articleAuthor = null;
       state.error = null;
     },
     [mutationType.getArticleSuccess](state, payload) {
       state.isLoading = false;
       state.data = payload;
+      state.articleAuthor = payload.author;
     },
     [mutationType.getArticleFailure](state, payload) {
       state.isLoading = false;
